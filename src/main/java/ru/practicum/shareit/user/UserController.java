@@ -1,7 +1,7 @@
 package ru.practicum.shareit.user;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import ru.practicum.shareit.exception.Create;
 import ru.practicum.shareit.exception.Update;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -34,7 +34,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Validated({Create.class}) @RequestBody UserDto user) {
+    public UserDto createUser(@Valid @RequestBody UserDto user) {
         log.info("POST /users - создание нового пользователя: {}", user);
         return userService.createUser(user);
     }
