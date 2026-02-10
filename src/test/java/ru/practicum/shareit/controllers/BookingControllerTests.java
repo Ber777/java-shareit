@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,41 +29,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BookingControllerTests {
-    /*@Autowired
-    private MockMvc mockMvc;
-
-    @MockitoBean
-    private BookingService bookingService;
-
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private MockMvc mockMvc;*/
-
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
     private BookingService bookingService;
-
 
     // Настраиваем ObjectMapper для корректной работы с LocalDateTime
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-
     private String asJsonString(final Object obj) throws Exception {
         return objectMapper.writeValueAsString(obj);
     }
-
-    /*@BeforeEach
-    void setUp() {
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // Включаем поддержку LocalDateTime
-        // Отключаем строгую проверку (опционально)
-        objectMapper.disable(com.fasterxml.jackson.databind.MapperFeature.REQUIRE_HANDLERS_FOR_JAVA8_TIMES);
-    }*/
 
     @Test
     void shouldCreateBooking() throws Exception {
@@ -78,14 +56,12 @@ public class BookingControllerTests {
         String startStr = "2026-02-12T10:00:00";
         String endStr = "2026-02-14T10:00:00";
 
-        // Запрос
         BookingDto requestDto = BookingDto.builder()
                 .itemId(itemId)
                 .start(start)
                 .end(end)
                 .build();
 
-        // Ответ
         BookingDtoResponse responseDto = BookingDtoResponse.builder()
                 .id(100L)
                 .item(ItemDto.builder().id(itemId).name("Item1").build())
@@ -95,18 +71,14 @@ public class BookingControllerTests {
                 .status(BookingStatus.WAITING)
                 .build();
 
-        // Мокируем сервис
         when(bookingService.createBooking(eq(userId), eq(requestDto)))
                 .thenReturn(responseDto);
 
-        // Выполняем запрос
         mockMvc.perform(post("/bookings")
                         .header("X-Sharer-User-Id", userId.toString())  // Важно: toString()
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(requestDto)))
-                // Проверяем статус
                 .andExpect(status().isCreated())
-                // Проверяем поля
                 .andExpect(jsonPath("$.id").value(100L))
                 .andExpect(jsonPath("$.item.id").value(itemId))
                 .andExpect(jsonPath("$.booker.id").value(userId))
