@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import ru.practicum.shareit.exception.Create;
 import ru.practicum.shareit.exception.Update;
