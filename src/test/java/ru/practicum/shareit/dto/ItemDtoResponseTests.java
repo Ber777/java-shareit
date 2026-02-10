@@ -1,5 +1,6 @@
 package ru.practicum.shareit.dto;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.item.dto.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 public class ItemDtoResponseTests {
     private ItemDtoResponse validItemDtoResponse;
 

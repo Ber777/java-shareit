@@ -1,5 +1,6 @@
 package ru.practicum.shareit.controllers;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.dto.ItemDtoResponse;
 import ru.practicum.shareit.item.service.ItemService;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 @AutoConfigureMockMvc
 public class ItemControllerTests {
         @Autowired

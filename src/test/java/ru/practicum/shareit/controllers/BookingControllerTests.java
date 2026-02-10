@@ -1,5 +1,6 @@
 package ru.practicum.shareit.controllers;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.booking.dto.*;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 @AutoConfigureMockMvc
 public class BookingControllerTests {
     @Autowired

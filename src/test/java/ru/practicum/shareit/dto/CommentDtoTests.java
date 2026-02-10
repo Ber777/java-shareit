@@ -1,5 +1,7 @@
 package ru.practicum.shareit.dto;
 
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.item.dto.CommentDto;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(classes = ShareItApp.class)
 public class CommentDtoTests {
     private CommentDto validCommentDto;
 

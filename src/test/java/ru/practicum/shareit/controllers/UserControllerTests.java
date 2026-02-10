@@ -1,5 +1,6 @@
 package ru.practicum.shareit.controllers;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -19,7 +20,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 @AutoConfigureMockMvc
 public class UserControllerTests {
     @Autowired

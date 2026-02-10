@@ -5,15 +5,15 @@ spring:
   application.name: shareit
   main.banner-mode: OFF
   jpa:
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: update
+    show-sql: true
     properties:
       hibernate.format_sql: true
-      hibernate.show_sql: true
   datasource:
-    username: "postgres"
-    password: "123456"
+    username: postgres
+    password: 123456
     url: jdbc:postgresql://localhost:5432/shareit
-    driver-class-name: "org.postgresql.Driver"
+    driver-class-name: org.postgresql.Driver
 
 logging:
   level:

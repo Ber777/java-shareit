@@ -1,5 +1,6 @@
 package ru.practicum.shareit.dto;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.exception.Create;
 import ru.practicum.shareit.exception.Update;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 public class UserDtoTests {
     @Autowired
     private Validator validator;

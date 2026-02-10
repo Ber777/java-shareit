@@ -1,5 +1,7 @@
 package ru.practicum.shareit.dto;
 
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.booking.dto.BookingDtoResponse;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(classes = ShareItApp.class)
 public class BookingDtoResponseTests {
     private BookingDtoResponse validBookingDtoResponse;
 

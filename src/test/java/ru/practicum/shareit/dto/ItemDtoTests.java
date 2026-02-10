@@ -1,5 +1,6 @@
 package ru.practicum.shareit.dto;
 
+import ru.practicum.shareit.ShareItApp;
 import ru.practicum.shareit.item.dto.ItemDto;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = ShareItApp.class)
 public class ItemDtoTests {
     @Autowired
     private Validator validator;
