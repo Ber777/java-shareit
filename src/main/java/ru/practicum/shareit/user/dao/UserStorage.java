@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.dao;
+/*package ru.practicum.shareit.user.dao;
 
 import ru.practicum.shareit.user.model.User;
 
@@ -15,3 +15,4 @@ public interface UserStorage {
 
     void deleteUser(Long userId);
 }
+*/

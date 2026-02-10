@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dao;
+/*package ru.practicum.shareit.item.dao;
 
 import ru.practicum.shareit.item.model.Item;
 
@@ -15,3 +15,4 @@ public interface ItemStorage {
 
     Collection<Item> searchItemsByText(String text);
 }
+*/
