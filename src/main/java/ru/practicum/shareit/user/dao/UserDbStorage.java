@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.dao;
+/*package ru.practicum.shareit.user.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -64,3 +64,4 @@ public class UserDbStorage implements UserStorage {
         return ++currentMaxId;
     }
 }
+*/

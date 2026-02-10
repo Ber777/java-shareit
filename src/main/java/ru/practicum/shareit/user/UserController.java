@@ -1,11 +1,16 @@
 package ru.practicum.shareit.user;
 
+import ru.practicum.shareit.exception.Create;
+import ru.practicum.shareit.exception.Update;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.service.UserService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
 
@@ -24,18 +29,19 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@PathVariable("userId") Long userId) {
-        log.info("GET /users/{} - получение пользователя по ID", userId);
+        log.info("GET /users/{} - получение пользователя по id", userId);
         return userService.getUserById(userId);
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody @Valid UserDto user) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@Validated({Create.class}) @RequestBody @Valid UserDto user) {
         log.info("POST /users - создание нового пользователя: {}", user);
         return userService.createUser(user);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto updateUserById(@RequestBody UserDto userDto, @PathVariable("userId") Long userId) {
+    public UserDto updateUserById(@Validated({Update.class}) @RequestBody UserDto userDto, @PathVariable("userId") Long userId) {
         log.info("PATCH /users/{} - обновление пользователя: {}", userId, userDto);
         return userService.updateUserById(userDto, userId);
     }
