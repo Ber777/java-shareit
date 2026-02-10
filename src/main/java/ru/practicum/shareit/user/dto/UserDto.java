@@ -20,6 +20,6 @@ public class UserDto {
 
     @Email(message = "Email должен иметь формат адреса электронной почты - символ @",
             groups = {Create.class, Update.class})
-    @NotBlank(message = "Email не должен быть пустым")
+    @NotBlank(message = "Email не должен быть пустым", groups = {Create.class})
     private String email;
 }
