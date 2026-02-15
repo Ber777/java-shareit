@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dao;
+/*package ru.practicum.shareit.item.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -75,3 +75,4 @@ public class ItemDbStorage implements ItemStorage {
         return ++currentMaxId;
     }
 }
+*/
