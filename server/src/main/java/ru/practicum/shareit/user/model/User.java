@@ -16,6 +16,7 @@ public class User {
     private Long id;
     private String name;
 
+    @Column(name = "email", unique = true)
     private String email;
 
     @Override
