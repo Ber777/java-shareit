@@ -1,5 +1,7 @@
 package ru.practicum.shareit.controllers;
 
+import jakarta.validation.Valid;
+import ru.practicum.shareit.Create;
 import ru.practicum.shareit.Update;
 import ru.practicum.shareit.client.UserClient;
 import ru.practicum.shareit.dto.UserDto;
@@ -33,7 +35,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createUser(@Validated @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> createUser(@Validated({Create.class}) @Valid @RequestBody UserDto userDto) {
         log.info("POST /users - создание нового пользователя: {}", userDto);
         return userClient.createUser(userDto);
     }
