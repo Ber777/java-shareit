@@ -8,7 +8,6 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
-import ru.practicum.shareit.user.repository.UserRepository;
 
 import org.junit.jupiter.api.*;
 import jakarta.persistence.EntityManager;
