@@ -29,7 +29,6 @@ public class ItemRequestDtoTests {
                 .id(1L)
                 .userId(2L)
                 .description("Подробное описание запроса")
-                .createdDate(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .items(List.of(ItemDto.builder().id(10L).build()))
                 .build();
@@ -40,7 +39,6 @@ public class ItemRequestDtoTests {
         assertEquals(1L, validItemRequestDto.getId());
         assertEquals(2L, validItemRequestDto.getUserId());
         assertEquals("Подробное описание запроса", validItemRequestDto.getDescription());
-        assertNotNull(validItemRequestDto.getCreatedDate());
         assertNotNull(validItemRequestDto.getCreated());
         assertEquals(1, validItemRequestDto.getItems().size());
     }
@@ -51,7 +49,6 @@ public class ItemRequestDtoTests {
                 .id(1L)
                 .userId(2L)
                 .description("")
-                .createdDate(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .build();
 
@@ -71,7 +68,6 @@ public class ItemRequestDtoTests {
                 .id(1L)
                 .userId(2L)
                 .description(null)
-                .createdDate(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .build();
 
@@ -91,7 +87,6 @@ public class ItemRequestDtoTests {
                 .id(null)
                 .userId(null)
                 .description("Непустое описание")
-                .createdDate(null)
                 .created(null)
                 .items(null)
                 .build();
@@ -107,7 +102,6 @@ public class ItemRequestDtoTests {
                 .id(null)
                 .userId(null)
                 .description("")
-                .createdDate(null)
                 .created(null)
                 .items(null)
                 .build();
@@ -127,7 +121,6 @@ public class ItemRequestDtoTests {
                 .id(1L)
                 .userId(2L)
                 .description("Описание")
-                .createdDate(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .items(new ArrayList<>())
                 .build();
@@ -142,7 +135,6 @@ public class ItemRequestDtoTests {
                 .id(1L)
                 .userId(2L)
                 .description("Описание")
-                .createdDate(LocalDateTime.now())
                 .created(LocalDateTime.now())
                 .items(null)
                 .build();

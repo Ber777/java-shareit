@@ -8,6 +8,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import org.junit.jupiter.api.*;
 import jakarta.persistence.EntityManager;
@@ -18,7 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -129,31 +135,69 @@ public class ItemRequestServiceImplTests {
 
     @Test
     void shouldGetAllRequests() {
+        // Создаём другого пользователя (не userId)
+        UserDto otherUserDto = makeUserDto("other@email.com", "Другой", "Пользователь");
+        otherUserDto = userService.createUser(otherUserDto);
+        Long otherUserId = otherUserDto.getId();
+
+        // Создаём запрос от другого пользователя (он должен попасть в "все запросы")
+        ItemRequestDto requestDto = makeItemRequestDto("Нужен ноутбук");
+        ItemRequestDto createdRequest = itemRequestService.createRequest(otherUserId, requestDto);
+        Long requestId = createdRequest.getId();
+
+        // Получаем "все запросы" (исключая userId)
         List<ItemRequestDto> allRequests = itemRequestService.getAllRequests(userId, 0, 10);
 
+        // Проверки
         assertThat(allRequests).isNotEmpty();
-        assertThat(allRequests.size()).isGreaterThanOrEqualTo(1);
+        assertThat(allRequests).anyMatch(r -> r.getId().equals(requestId));
 
-        ItemRequestDto firstRequest = allRequests.getFirst();
-        assertThat(firstRequest.getId()).isEqualTo(requestId);
-        assertThat(firstRequest.getDescription()).contains("Нужен ноутбук");
+        ItemRequestDto matchedRequest = allRequests.stream()
+                .filter(r -> r.getId().equals(requestId))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Запрос с ID " + requestId + " не найден в результатах"));
+
+        assertThat(matchedRequest.getDescription()).contains("Нужен ноутбук");
     }
 
     @Test
     void shouldPaginateAllRequests() {
-        // Создаём ещё несколько запросов
-        for (int i = 0; i < 3; i++) {
+        // Создаём другого пользователя
+        UserDto otherUserDto = makeUserDto("other2@email.com", "Другой", "Пользователь2");
+        otherUserDto = userService.createUser(otherUserDto);
+        Long otherUserId = otherUserDto.getId();
+
+        // Создаём 4 запроса от другого пользователя
+        List<Long> expectedRequestIds = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
             ItemRequestDto requestDto = makeItemRequestDto("Запрос #" + i);
-            itemRequestService.createRequest(userId, requestDto);
+            requestDto.setCreated(LocalDateTime.now().minusMinutes(i));
+            ItemRequestDto created = itemRequestService.createRequest(otherUserId, requestDto);
+            expectedRequestIds.add(created.getId());
         }
 
         // Получаем первую страницу (2 элемента)
         List<ItemRequestDto> page1 = itemRequestService.getAllRequests(userId, 0, 2);
         assertThat(page1).hasSize(2);
 
+        // Проверяем, что все id из page1 есть в expectedRequestIds
+        Set<Long> page1Ids = page1.stream().map(ItemRequestDto::getId).collect(Collectors.toSet());
+        assertThat(page1Ids).containsAnyOf(expectedRequestIds.toArray(new Long[0]));
+        assertThat(page1Ids).isSubsetOf(expectedRequestIds);
+
         // Получаем вторую страницу (2 элемента)
         List<ItemRequestDto> page2 = itemRequestService.getAllRequests(userId, 2, 2);
         assertThat(page2).hasSize(2);
+
+        // Проверяем id второй страницы
+        Set<Long> page2Ids = page2.stream().map(ItemRequestDto::getId).collect(Collectors.toSet());
+        assertThat(page2Ids).containsAnyOf(expectedRequestIds.toArray(new Long[0]));
+        assertThat(page2Ids).isSubsetOf(expectedRequestIds);
+
+        // Проверяем отсутствие пересечений между страницами
+        Set<Long> intersection = new HashSet<>(page1Ids);
+        intersection.retainAll(page2Ids);
+        assertThat(intersection).isEmpty();
     }
 
     @Test

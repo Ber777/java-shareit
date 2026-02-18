@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +59,18 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         List<ItemRequest> requests = itemRequestRepository.findByRequestorId(userId, sort);
 
         log.info("Найдено {} запросов пользователя с id: {}", requests.size(), userId);
+
         return requests.stream()
-                .map(ItemRequestMapper::toItemRequestDto)
+                .map(request -> {
+                    ItemRequestDto dto = ItemRequestMapper.toItemRequestDto(request);
+                    // Загружаем связанные Item для текущего запроса
+                    List<Item> items = itemRepository.findByRequestId(request.getId());
+                    List<ItemDto> itemDto = items.stream()
+                            .map(ItemMapper::toItemDto)
+                            .toList();
+                    dto.setItems(itemDto);
+                    return dto;
+                })
                 .toList();
     }
 
@@ -71,11 +82,21 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         Sort sort = Sort.by(Sort.Direction.DESC, "created");
         int firstPage = from / size;
         PageRequest pageRequest = PageRequest.of(firstPage, size, sort);
-        List<ItemRequest> requests = itemRequestRepository.findAll(pageRequest).getContent();
+
+        // Фильтруем запросы: исключаем те, где requestorId = userId
+        Page<ItemRequest> page = itemRequestRepository.findByRequestorIdNotOrderByCreatedDesc(userId, pageRequest);
+        List<ItemRequest> requests = page.getContent();
 
         log.info("Найдено {} запросов", requests.size());
         return requests.stream()
-                .map(ItemRequestMapper::toItemRequestDto)
+                .map(request -> {
+                    ItemRequestDto dto = ItemRequestMapper.toItemRequestDto(request);
+                    List<Item> items = itemRepository.findByRequestId(request.getId());
+                    dto.setItems(items.stream()
+                            .map(ItemMapper::toItemDto)
+                            .toList());
+                    return dto;
+                })
                 .toList();
     }
 

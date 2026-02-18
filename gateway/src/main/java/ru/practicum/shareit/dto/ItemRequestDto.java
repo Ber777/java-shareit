@@ -23,8 +23,6 @@ public class ItemRequestDto {
     @NotBlank(message = "Описание не может быть пустым")
     private String description;
 
-    private LocalDateTime createdDate;
-
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime created;
 
